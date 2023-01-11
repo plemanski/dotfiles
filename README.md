@@ -1,5 +1,6 @@
 # dotfiles
 <h2> Installation guide </h2>
+
 ```
 1. echo .cfg>> .gitignore
 2. git clone https://github.com/plemanski/dotfiles
