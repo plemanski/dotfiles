@@ -2,7 +2,6 @@ lua require('plugins')
 lua require('config.nvimtree')
 
 lua require('mason').setup()
-lua require('mason-lspconfig').setup()
 
 lua require('config.nvim-treesitter')
 
@@ -33,7 +32,6 @@ let mapleader = ","
 set clipboard+=unnamedplus
 
 set autochdir
-
 "Toggle the NvimTree
 nnoremap <leader>tt <cmd>NvimTreeToggle<cr>
 
@@ -43,6 +41,3 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-lua << EOF
-    require'lspconfig'.theme_check.setup{}
-EOF

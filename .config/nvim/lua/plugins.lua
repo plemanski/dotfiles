@@ -9,10 +9,22 @@ return require('packer').startup(function(use)
     }
 
     use {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
         "hrsh7th/nvim-cmp",
-        "hrsh7th/cmp-nvim-lsp"
+        "hrsh7th/cmp-vsnip",
+        "hrsh7th/vim-vsnip"
     }
     
+    use {
+        "mfussenegger/nvim-jdtls"
+    }
+
+    use 'mfussenegger/nvim-dap'
+
+    use 'nvim-lua/lsp-status.nvim'
 
     --Null-LS for linking LSP features to treesitter and nvim lsp
     use {
@@ -33,10 +45,10 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag='0.1.0', 
         requires = {{'nvim-lua/plenary.nvim'}}
     })
+    use {'nvim-telescope/telescope-ui-select.nvim' }
 
     -- Highlight keywords in file on hover
     use "RRethy/vim-illuminate"
-
 
     use ({
         'nvim-treesitter/nvim-treesitter',
