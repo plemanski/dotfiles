@@ -1,5 +1,4 @@
 local jdtls = require'jdtls'
-local map = require'utils'.map
 
 local root_markers = { '.git', 'gradlew', 'pom.xml' }
 local root_dir = jdtls.setup.find_root(root_markers)
@@ -44,7 +43,6 @@ local config = {
 		-- See `data directory configuration` section in the README
 		'-data', workspace_folder
 	},
-	print(workspace_folder),
 	-- This is the default if not provided, you can remove it. Or adjust as needed.
 	-- One dedicated LSP server & client will be started per unique root_dir
 	root_dir = root_dir,
@@ -55,6 +53,7 @@ local config = {
 	settings = {
 		java = {
 			signatureHelp = { enabled = true },
+			debugging = { enabled = true },
 			contentProvider = { preferred = 'fernflower' },
 			completion = {
 				favoriteStaticmembers = {
@@ -68,35 +67,78 @@ local config = {
 					starThreshold = 9999,
 					staticStarThreshold = 9999,
 				}
-			}
+			},
+			maven = {
+				downloadSources = true
+			},
 		}
 	},
 
 	-- Language server `initializationOptions`
-	-- You need to extend the `bundles` with paths to jar files
-	-- if you want to use additional eclipse.jdt.ls plugins.
+	-- You need to extend the `bundles` with paths to jar files if you want to use additional eclipse.jdt.ls plugins.
 	--
 	-- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
 	--
 	-- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
-	init_options = {
-		bundles = {
-			-- Java Debug
-				'/Users/peterlemanski/GitRepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar',
-			-- Java Test Runner
-			vim.fn.glob('$HOME/GitRepos/vscode-java-test/server/*.jar', 1),
-		}
-	},
 }
 
-config.on_attach = function(client, bufnr)
+-- Init java-debug and vscode-java-test
+local bundles={vim.fn.glob("$HOME/GitRepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",1)}
+vim.list_extend(bundles, vim.split(vim.fn.glob('$HOME/GitRepos/vscode-java-test/server/*.jar', 1),"\n"))
+config['init_options'] = {
+	bundles= bundles
+}
+function get_spring_boot_runner(profile, debug)
+	local params = ""
+	local debug_params
+	local profile_params
+	if (not debug) then
+		debug_params = params ..  ' -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000" ';
+	else
+		debug_params =  debug
+	end
+	if (not profile) then
+		profile_params = ' -Dspring-boot.run.profile=local '
+	else
+		profile_params= profile
+	end
+	return './mvnw spring-boot:run' .. profile_params .. debug_params
+end
+
+function spring_boot_runner()
+	vim.cmd('term ' .. get_spring_boot_runner())
+end
+
+function attach_to_debug()
+	local dap, dapui = require('dap'), require('dapui')
+	dap.configurations.java = {
+		{
+			type='java',
+			request='attach',
+			name='Debug (Attach) - Spring Boot',
+			hostName='127.0.0.1',
+			port= 8000,
+		}
+	}
+	dap.continue()
+	dapui.open()
+end
+
+config['on_attach'] = function(client, bufnr)
+	require'dapui'.setup()
 	jdtls.setup_dap({ hotcodereplace = 'auto' })
 	jdtls.setup.add_commands()
 	-- Keymaps
-	local opts = { silent = true, buffer = bufnr }
-	map('n', '<A-o>', jdtls.organize_imports, opts)
-	map('n', '<leader>tc', jdtls.test_class, opts)
-	map('n', '<leader>tm', jdtls.test_nearest_method, opts)
+	vim.keymap.set('n', '<Leader>gT', ":lua print('attached')<CR>")
+	vim.keymap.set('n', '<A-o>', ":lua jdtls.organize_imports<CR>")
+	vim.keymap.set('n', '<Leader>gtc', ":lua jdtls.test_class<CR>")
+	vim.keymap.set('n', '<Leader>gtm', ":lua jdtls.test_nearest_method<CR>")
+	vim.keymap.set('n', '<Leader>gsb', ":lua require'dap'.toggle_breakpoint()<CR>")
+	vim.keymap.set('n', '<Leader>gsc', ":lua require'dap'.continue()<CR>")
+	vim.keymap.set('n', '<Leader>gsi', ":lua require'dap'.step_into()<CR>")
+	vim.keymap.set('n', '<Leader>gso', ":lua require'dap'.step_over()<CR>")
+	vim.keymap.set('n', '<Leader>gsr', ":lua require'dap'.repl.open()<CR>")
+
 end
 
 -- This starts a new client & server,
