@@ -26,6 +26,9 @@ return require('packer').startup(function(use)
 	}
 	use { 'nvim-zh/better-escape.vim', event = 'InsertEnter' }
 	use { 'epwalsh/obsidian.nvim' }
+	use 'junegunn/vim-peekaboo'
+	use 'tpope/vim-fugitive'
+	use 'lewis6991/gitsigns.nvim'
 	-- LSP Related Plugins
 	use { 'neovim/nvim-lspconfig' }
 	use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
@@ -33,7 +36,7 @@ return require('packer').startup(function(use)
 		'williamboman/mason.nvim',
 		run = ':MasonUpdate' -- :MasonUpdate updates registry contents
 	}
-	use 'jose-elias-alvarez/null-ls.nvim'
+	--  RIP :( use 'jose-elias-alvarez/null-ls.nvim'
 	use 'williamboman/mason-lspconfig.nvim'
 	use 'nvimdev/lspsaga.nvim'
 	use {'folke/trouble.nvim',

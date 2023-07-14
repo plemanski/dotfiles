@@ -113,11 +113,16 @@ require('typescript').setup({
 	}
 })
 
-local null_ls = require 'null-ls'
 
+--[[
+This will remain in hopes that someone takes over the null-ls project.
+If this is still here 13 July 2024, I will remove it
+
+local null_ls = require 'null-ls'
 null_ls.setup({
 	sources = {
 		require("typescript.extensions.null-ls.code-actions"),
 		null_ls.builtins.diagnostics.shellcheck,
 	},
 })
+]]--

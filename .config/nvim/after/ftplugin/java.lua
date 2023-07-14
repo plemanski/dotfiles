@@ -1,3 +1,6 @@
+vim.o.shiftwidth = 4;
+vim.o.softtabstop = 4;
+
 local jdtls = require'jdtls'
 
 local root_markers = { '.git', 'gradlew', 'pom.xml' }
@@ -127,7 +130,7 @@ end
 config['on_attach'] = function(client, bufnr)
 	require'dapui'.setup()
 	jdtls.setup_dap({ hotcodereplace = 'auto' })
-	jdtls.setup.add_commands()
+	--jdtls.setup.add_commands() -- deprecated: start now adds commands
 	-- Keymaps
 	vim.keymap.set('n', '<Leader>gT', ":lua print('attached')<CR>")
 	vim.keymap.set('n', '<A-o>', ":lua jdtls.organize_imports<CR>")
