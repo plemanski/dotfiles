@@ -101,6 +101,19 @@ lspconfig.rust_analyzer.setup{
 lspconfig.bashls.setup{
 	capabilities = capabilities,
 }
+lspconfig.groovyls.setup{
+	cmd = { "java", "-jar", "/Users/peterlemanski/.config/nvim/dependencies/groovy-language-server-all.jar" },
+	capabilities = capabilities
+}
+lspconfig.awk_ls.setup{
+	capabilities = capabilities
+}
+lspconfig.gopls.setup{
+	capabilities = capabilities
+}
+lspconfig.perlnavigator.setup{
+	capabilities = capabilities
+}
 
 require('typescript').setup({
 	disable_commands = true,

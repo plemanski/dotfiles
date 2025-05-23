@@ -13,3 +13,9 @@ map("n", "<Leader>tt", ":NvimTreeToggle<CR>")
 -- Navigation
 map("n", "<Leader>]", "gt")
 map("n", "<Leader>[", "gT")
+
+-- JQ
+-----Format Whole Buffer
+map("n", "<Leader>fj", "<Cmd>%!jq<CR>")
+-----Format Visual Select
+map("v", "<Leader>fj", ":'<,'>!jq<CR>")

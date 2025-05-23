@@ -5,4 +5,4 @@ require('mappings')
 require('formatting')
 vim.o.clipboard="unnamedplus"
 vim.g.termguicolors = true
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "rose-pine"

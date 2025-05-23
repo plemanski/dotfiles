@@ -1,4 +1,4 @@
-require("catppuccin").setup({
-	flavour = "mocha",
-	transparent_background = false,
+require("rose-pine").setup({
+	variant='dawn',
+	disable_background=true,
 })

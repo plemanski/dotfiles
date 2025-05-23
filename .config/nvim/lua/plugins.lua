@@ -2,7 +2,7 @@ return require('packer').startup(function(use)
 	-- Packer can manage itself
 	use 'wbthomason/packer.nvim'
 	-- Appearance Plugins
-	use { 'catppuccin/nvim', as = 'catppuccin' }
+	use { 'rose-pine/neovim', as = 'rose-pine' }
 	use 'nvim-lualine/lualine.nvim'
 	use 'akinsho/bufferline.nvim'
 	-- QoL Plugins
@@ -11,7 +11,7 @@ return require('packer').startup(function(use)
 		run = ':TSUpdate'
 	}
 	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.1',
+		'nvim-telescope/telescope.nvim', tag = '0.1.8',
 		requires = { { 'nvim-lua/plenary.nvim' } }
 	}
 	use {
